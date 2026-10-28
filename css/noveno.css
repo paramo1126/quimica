@@ -1,0 +1,528 @@
+/* ============================================================
+   SEMANA CULTURAL DE QUÍMICA — noveno.css
+   Design System Formal Elegante (9° Grado - H2O & Cajas Orbitales)
+   ============================================================ */
+
+:root {
+  --bg-main: #0A0F1D;           /* Fondo principal oscuro */
+  --bg-surface: #131B2E;        /* Tarjetas y contendores */
+  --bg-surface-hover: #1E293B;  /* Estado hover */
+  --border-subtle: rgba(148, 163, 184, 0.18); 
+  --border-accent: #38BDF8;     /* Borde cian acento */
+  
+  --primary: #38BDF8;          /* Cian Azulado (Acento Principal) */
+  --primary-hover: #0284C7;    
+  --secondary: #818CF8;        /* Índigo/Violeta suave */
+  
+  --success: #34D399;          /* Verde esmeralda para respuestas correctas */
+  --danger: #F87171;           /* Rojo para errores / tiempo agotado */
+  
+  --text-main: #F8FAFC;        /* Texto blanco alto contraste */
+  --text-muted: #94A3B8;       /* Texto secundario gris azulado */
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-main);
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+/* ---------- TOPBAR ---------- */
+.site-header {
+  background: rgba(19, 27, 46, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 0.85rem 1.5rem;
+}
+
+.header-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.btn-back:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-accent);
+  color: var(--primary);
+  transform: translateX(-3px);
+}
+
+.timer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(10, 15, 29, 0.85);
+  border: 1px solid var(--border-subtle);
+  border-radius: 9999px;
+  padding: 8px 18px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.timer-badge.warning {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: rgba(248, 113, 113, 0.12);
+  animation: pulse-danger 1s infinite alternate;
+}
+
+@keyframes pulse-danger {
+  from { box-shadow: 0 0 10px rgba(248, 113, 113, 0.3); }
+  to { box-shadow: 0 0 25px rgba(248, 113, 113, 0.6); }
+}
+
+/* ---------- MAIN LAYOUT ---------- */
+.layout-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .layout-container {
+    grid-template-columns: 7fr 5fr;
+  }
+}
+
+/* ---------- LIENZO MATEMÁTICO (LEFT) ---------- */
+.canvas-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.canvas-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.85rem;
+}
+
+#lienzo {
+  position: relative;
+  height: 380px;
+  border-radius: 16px;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  background-color: #070B14;
+  background-image: 
+    linear-gradient(rgba(56, 189, 248, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Átomos circulares */
+.atom-circle {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: move;
+  user-select: none;
+  font-family: 'Courier New', Courier, monospace;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  z-index: 10;
+}
+
+.atom-circle:hover {
+  transform: scale(1.05);
+}
+
+.atom-circle.dragging {
+  cursor: grabbing;
+  z-index: 20;
+}
+
+#atom-O {
+  width: 124px;
+  height: 124px;
+  border: 3px solid var(--primary);
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--text-main);
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.35);
+}
+
+#atom-H1, #atom-H2 {
+  width: 84px;
+  height: 84px;
+  border: 2px solid var(--secondary);
+  background: rgba(129, 140, 248, 0.12);
+  color: var(--text-main);
+  box-shadow: 0 0 20px rgba(129, 140, 248, 0.3);
+}
+
+.atom-symbol {
+  font-size: 1.5rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.atom-specs {
+  font-size: 0.7rem;
+  font-weight: 700;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+/* SVG de enlaces */
+#bond-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.bond-line {
+  stroke: var(--primary);
+  stroke-width: 3;
+  stroke-dasharray: 6 4;
+  opacity: 0.7;
+}
+
+/* ---------- CAJAS ORBITALES (SORTABLE) ---------- */
+.orbitals-container {
+  background: rgba(10, 15, 29, 0.6);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 1.25rem;
+}
+
+.orbital-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.orbital-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  font-family: monospace;
+  color: var(--primary);
+}
+
+.orbital-box {
+  width: 58px;
+  height: 72px;
+  background: var(--bg-main);
+  border: 2px solid var(--border-subtle);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.orbital-box.dragover {
+  border-color: var(--primary);
+  background: rgba(56, 189, 248, 0.1);
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.35);
+}
+
+.orbital-box.correct {
+  border-color: var(--success);
+  background: rgba(52, 211, 153, 0.08);
+}
+
+.orbital-box.wrong {
+  border-color: var(--danger);
+  background: rgba(248, 113, 113, 0.08);
+}
+
+/* Tokens de flechas */
+.arrow-token {
+  width: 22px;
+  height: 48px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 900;
+  cursor: grab;
+  user-select: none;
+  transition: transform 0.2s ease;
+}
+
+.arrow-token:active {
+  cursor: grabbing;
+}
+
+.arrow-spin-up {
+  color: #F8FAFC;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.arrow-spin-down {
+  color: #94A3B8;
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.arrow-bond-red {
+  color: #F87171;
+  background: rgba(248, 113, 113, 0.15);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  box-shadow: 0 0 10px rgba(248, 113, 113, 0.25);
+}
+
+.arrow-bond-blue {
+  color: #38BDF8;
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+}
+
+/* Paleta de flechas */
+.arrow-palette {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 8px 14px;
+}
+
+.arrow-palette-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+/* ---------- PANEL DERECHO: 6 DESAFÍOS & HERRAMIENTAS ---------- */
+.quiz-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.challenge-card {
+  background: var(--bg-main);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  padding: 1.1rem;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.challenge-card.active {
+  border-color: var(--border-accent);
+  box-shadow: 0 4px 18px rgba(56, 189, 248, 0.15);
+}
+
+.challenge-card.completed {
+  border-color: var(--success);
+  background: rgba(52, 211, 153, 0.04);
+}
+
+.challenge-card.failed {
+  border-color: var(--danger);
+  background: rgba(248, 113, 113, 0.04);
+}
+
+.challenge-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(56, 189, 248, 0.1);
+  color: var(--primary);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  margin-bottom: 6px;
+}
+
+.challenge-badge.success {
+  background: rgba(52, 211, 153, 0.1);
+  color: var(--success);
+  border-color: rgba(52, 211, 153, 0.3);
+}
+
+.challenge-badge.danger {
+  background: rgba(248, 113, 113, 0.1);
+  color: var(--danger);
+  border-color: rgba(248, 113, 113, 0.3);
+}
+
+/* Acordeón de núcleos */
+.accordion-wrapper {
+  background: var(--bg-main);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.accordion-header {
+  padding: 0.9rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  background: rgba(148, 163, 184, 0.04);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.accordion-body {
+  padding: 1.2rem;
+  border-top: 1px solid var(--border-subtle);
+  display: none;
+}
+
+.accordion-body.open {
+  display: block;
+}
+
+.input-num {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  border-radius: 8px;
+  padding: 6px 10px;
+  width: 60px;
+  text-align: center;
+  font-weight: 700;
+  font-family: monospace;
+}
+
+.input-num:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+/* Botones de acción */
+.btn-primary-action {
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  color: #0A0F1D;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+}
+
+.btn-primary-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
+}
+
+.btn-verify-all {
+  background: linear-gradient(135deg, var(--success), #059669);
+  color: #0A0F1D;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 24px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 25px rgba(52, 211, 153, 0.35);
+}
+
+.btn-verify-all:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(52, 211, 153, 0.5);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 15, 29, 0.88);
+  backdrop-filter: blur(16px);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal-content {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-accent);
+  border-radius: 24px;
+  padding: 2.8rem 2.2rem;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 35px rgba(56, 189, 248, 0.2);
+}

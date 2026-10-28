@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>10° - 11° Grado — Enlaces, Química Orgánica y Laboratorio 3D</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/decimoaonce.css" />
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="btn-back">
+        <i class="fa fa-arrow-left"></i> Volver al Menú
+      </a>
+      <div class="flex items-center gap-3">
+        <i class="fa-solid fa-flask-vial text-emerald-400 text-xl"></i>
+        <h1 class="text-base sm:text-lg font-bold text-slate-100">
+          10° – 11° GRADO <span class="text-sky-400">— Enlaces, Orgánica y Laboratorio Molecular 3D</span>
+        </h1>
+      </div>
+      <!-- Timer Digital 5 Minutos -->
+      <div id="quiz-timer-badge" class="timer-badge">
+        <i class="fa-regular fa-clock"></i>
+        <span id="timer-display">⏳ 05:00</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN 3-COLUMN LAYOUT -->
+  <main class="lab-layout">
+
+    <!-- ==========================================
+         COLUMNA 1: PALETA DE ELEMENTOS
+    ========================================== -->
+    <aside class="elements-panel">
+      <div class="border-b border-slate-800 pb-2">
+        <h2 class="text-sm font-bold text-slate-100 flex items-center gap-2">
+          <i class="fa-solid fa-table text-sky-400"></i>
+          Elementos Químicos
+        </h2>
+        <p class="text-xs text-slate-400">Haz clic para agregar al reactor</p>
+      </div>
+
+      <div class="elements-grid">
+        <!-- H -->
+        <div class="element-card" onclick="addElement('H')">
+          <span class="element-number">1</span>
+          <div class="element-symbol">H</div>
+          <div class="element-name">Hidrógeno</div>
+          <span class="element-type-badge">No metal</span>
+        </div>
+
+        <!-- O -->
+        <div class="element-card" onclick="addElement('O')">
+          <span class="element-number">8</span>
+          <div class="element-symbol text-rose-400">O</div>
+          <div class="element-name">Oxígeno</div>
+          <span class="element-type-badge">No metal</span>
+        </div>
+
+        <!-- C -->
+        <div class="element-card" onclick="addElement('C')">
+          <span class="element-number">6</span>
+          <div class="element-symbol text-slate-300">C</div>
+          <div class="element-name">Carbono</div>
+          <span class="element-type-badge">Base orgánica</span>
+        </div>
+
+        <!-- Na -->
+        <div class="element-card metal" onclick="addElement('Na')">
+          <span class="element-number">11</span>
+          <div class="element-symbol text-amber-400">Na</div>
+          <div class="element-name">Sodio</div>
+          <span class="element-type-badge">Metal alcalino</span>
+        </div>
+
+        <!-- Cl -->
+        <div class="element-card" onclick="addElement('Cl')">
+          <span class="element-number">17</span>
+          <div class="element-symbol text-emerald-400">Cl</div>
+          <div class="element-name">Cloro</div>
+          <span class="element-type-badge">Halógeno</span>
+        </div>
+
+        <!-- Fe -->
+        <div class="element-card metal" onclick="addElement('Fe')">
+          <span class="element-number">26</span>
+          <div class="element-symbol text-orange-400">Fe</div>
+          <div class="element-name">Hierro</div>
+          <span class="element-type-badge">Metal transición</span>
+        </div>
+      </div>
+
+      <!-- Atajos rápidos para desafíos -->
+      <div class="quick-mix-box">
+        <span class="text-[11px] font-bold text-slate-400 block mb-1">Cargas Rápidas para Desafíos:</span>
+        <button class="btn-quick-mix" onclick="loadPreset(['H','H','O'])">
+          <span>💧 Sintetizar Agua (2H + O)</span>
+          <i class="fa-solid fa-plus text-xs"></i>
+        </button>
+        <button class="btn-quick-mix" onclick="loadPreset(['Na','Cl'])">
+          <span>🧂 Sintetizar Sal (Na + Cl)</span>
+          <i class="fa-solid fa-plus text-xs"></i>
+        </button>
+        <button class="btn-quick-mix" onclick="loadPreset(['C','C','H','H','H','H','H','H','O'])">
+          <span>🍷 Sintetizar Etanol (2C + 6H + O)</span>
+          <i class="fa-solid fa-plus text-xs"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ==========================================
+         COLUMNA 2: REACTOR 3D EN THREE.JS
+    ========================================== -->
+    <section class="reactor-container">
+      <div class="reactor-canvas-wrapper">
+        <canvas id="reactor-canvas"></canvas>
+
+        <div class="reactor-overlay-info">
+          <span class="reactor-pill">
+            <i class="fa-solid fa-atom text-sky-400 mr-1"></i>
+            <span id="formula-display">Reactor Vacío</span>
+          </span>
+          <span class="reactor-pill text-xs">
+            <i class="fa-solid fa-arrows-spin text-emerald-400 mr-1"></i> Arrastra para rotar 3D
+          </span>
+        </div>
+      </div>
+
+      <!-- Bandeja de elementos cargados -->
+      <div class="flex items-center justify-between mt-3">
+        <span class="text-xs font-bold text-slate-300">Elementos en Reactor:</span>
+        <span id="elements-count" class="text-xs text-slate-400">0 / 9 átomos</span>
+      </div>
+      <div class="loaded-elements-tray" id="loaded-elements-tray">
+        <span class="text-xs text-slate-500 italic">Haz clic en elementos o en las cargas rápidas...</span>
+      </div>
+
+      <!-- Botones de Reacción -->
+      <div class="reactor-actions">
+        <button class="btn-react" onclick="reactElements()">
+          <i class="fa-solid fa-flask"></i>
+          <span>REACCIONAR (SINTETIZAR)</span>
+        </button>
+        <button class="btn-clear-reactor" onclick="clearReactor()">
+          <i class="fa-solid fa-trash-can"></i>
+          <span>Limpiar</span>
+        </button>
+      </div>
+
+      <!-- Ficha de Molécula Sintetizada -->
+      <div id="molecule-result-card" class="mt-4 p-3.5 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between" style="display: none;">
+        <div class="flex items-center gap-3">
+          <div class="text-3xl" id="mol-emoji">💧</div>
+          <div>
+            <h4 class="font-bold text-slate-100 text-sm" id="mol-name">Agua (H₂O)</h4>
+            <p class="text-xs text-slate-400" id="mol-desc">Enlace covalente polar con geometría angular de 104.5°.</p>
+          </div>
+        </div>
+        <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 font-bold" id="mol-type">
+          Covalente
+        </span>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         COLUMNA 3: BANCO DE 6 DESAFÍOS DEL QUIZZ
+    ========================================== -->
+    <aside class="quiz-challenges-panel">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+        <h2 class="text-sm font-bold text-slate-100 flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-sky-400"></i>
+          6 Desafíos Evaluativos
+        </h2>
+        <div class="px-2.5 py-1 rounded-full bg-slate-900 border border-slate-700 text-xs font-mono font-bold text-sky-400">
+          Puntaje: <span id="score-counter" class="text-slate-100">0 / 6</span>
+        </div>
+      </div>
+
+      <!-- DESAFÍO 1: ENLACES -->
+      <div class="challenge-box" id="ch-box-1">
+        <span class="challenge-badge-pill" id="ch-badge-1">1. Teoría — Enlaces</span>
+        <h4 class="text-xs font-bold text-slate-200 mb-1">
+          El enlace que ocurre cuando dos no metales comparten electrones de forma equitativa o desigual se llama:
+        </h4>
+        <div class="space-y-1" id="opts-ch-1">
+          <button class="opt-btn-sm" onclick="answerAdvancedTheory(1, 0)">A) Enlace Covalente</button>
+          <button class="opt-btn-sm" onclick="answerAdvancedTheory(1, 1)">B) Enlace Iónico</button>
+          <button class="opt-btn-sm" onclick="answerAdvancedTheory(1, 2)">C) Enlace Metálico</button>
+          <button class="opt-btn-sm" onclick="answerAdvancedTheory(1, 3)">D) Puente de Hidrógeno</button>
+        </div>
+        <p class="text-[11px] text-slate-400 mt-1 hidden" id="exp-ch-1"></p>
+      </div>
+
+      <!-- DESAFÍO 2: GRUPO -OH -->
+      <div class="challenge-box" id="ch-box-2">
+        <span class="challenge-badge-pill" id="ch-badge-2">2. Completar — Grupos Funcionales</span>
+        <h4 class="text-xs font-bold text-slate-200 mb-1">
+          Los compuestos orgánicos que contienen el grupo funcional -OH (hidroxilo) pertenecen a la familia de los ________.
+        </h4>
+        <div class="space-y-1" id="opts-ch-2">
+          <button class="opt-btn-sm" onclick="answerAdvancedTheory(2, 0)">A) Alcoholes</button>
+          <button class="opt-btn-sm" onclick="answerAdvancedTheory(2, 1)">B) Cetonas</button>
+          <button class="opt-btn-sm" onclick="answerAdvancedTheory(2, 2)">C) Éteres</button>
+          <button class="opt-btn-sm" onclick="answerAdvancedTheory(2, 3)">D) Alquinos</button>
+        </div>
+        <p class="text-[11px] text-slate-400 mt-1 hidden" id="exp-ch-2"></p>
+      </div>
+
+      <!-- DESAFÍO 3: HIDROCARBUROS ALCANOS -->
+      <div class="challenge-box" id="ch-box-3">
+        <span class="challenge-badge-pill" id="ch-badge-3">3. Teoría — Orgánica Básica</span>
+        <h4 class="text-xs font-bold text-slate-200 mb-1">
+          El gas metano (CH₄) es el hidrocarburo más simple de la familia de los:
+        </h4>
+        <div class="space-y-1" id="opts-ch-3">
+          <button class="opt-btn-sm" onclick="answerAdvancedTheory(3, 0)">A) Alcanos (saturados)</button>
+          <button class="opt-btn-sm" onclick="answerAdvancedTheory(3, 1)">B) Alquenos (doble enlace)</button>
+          <button class="opt-btn-sm" onclick="answerAdvancedTheory(3, 2)">C) Alquinos (triple enlace)</button>
+          <button class="opt-btn-sm" onclick="answerAdvancedTheory(3, 3)">D) Hidrocarburos aromáticos</button>
+        </div>
+        <p class="text-[11px] text-slate-400 mt-1 hidden" id="exp-ch-3"></p>
+      </div>
+
+      <!-- DESAFÍO 4: 3D AGUA -->
+      <div class="challenge-box" id="ch-box-4">
+        <span class="challenge-badge-pill" id="ch-badge-4">4. Desafío 3D — Agua</span>
+        <h4 class="text-xs font-bold text-slate-200 mb-1">
+          En el reactor 3D, sintetiza Agua (H₂O) cargando 2H + O y pulsa 'REACCIONAR'.
+        </h4>
+        <p class="text-[11px] text-slate-400" id="status-ch-4">Estado: Pendiente de reacción</p>
+      </div>
+
+      <!-- DESAFÍO 5: 3D SAL -->
+      <div class="challenge-box" id="ch-box-5">
+        <span class="challenge-badge-pill" id="ch-badge-5">5. Desafío 3D — Cloruro de Sodio</span>
+        <h4 class="text-xs font-bold text-slate-200 mb-1">
+          En el reactor 3D, sintetiza Sal de mesa (NaCl) cargando Na + Cl y pulsa 'REACCIONAR'.
+        </h4>
+        <p class="text-[11px] text-slate-400" id="status-ch-5">Estado: Pendiente de reacción</p>
+      </div>
+
+      <!-- DESAFÍO 6: 3D ETANOL -->
+      <div class="challenge-box" id="ch-box-6">
+        <span class="challenge-badge-pill" id="ch-badge-6">6. Desafío 3D — Etanol (Alcohol)</span>
+        <h4 class="text-xs font-bold text-slate-200 mb-1">
+          En el reactor 3D, sintetiza Etanol (C₂H₅OH) cargando 2C + 6H + O y pulsa 'REACCIONAR'.
+        </h4>
+        <p class="text-[11px] text-slate-400" id="status-ch-6">Estado: Pendiente de reacción</p>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- MODAL DE RESULTADOS FINALES -->
+  <div id="modal-results" class="modal-overlay">
+    <div class="modal-content">
+      <div class="w-16 h-16 rounded-full bg-emerald-950 border border-emerald-400/40 flex items-center justify-center mx-auto text-emerald-400 text-2xl mb-4">
+        <i class="fa-solid fa-award"></i>
+      </div>
+      <h2 id="modal-result-title" class="text-2xl font-bold text-slate-100 mb-1">¡Laboratorio 3D Finalizado!</h2>
+      <div id="modal-result-score" class="text-5xl font-black text-emerald-400 my-3">6 / 6</div>
+      <p id="modal-result-msg" class="text-sm text-slate-400 mb-6">
+        ¡Impresionante maestría química! Has dominado los enlaces covalentes, la química orgánica funcional y sintetizado las 3 moléculas clave en 3D.
+      </p>
+
+      <div class="flex flex-col gap-3">
+        <button class="btn-react justify-center py-3" onclick="restartDecimoQuiz()">
+          <i class="fa-solid fa-rotate-right"></i> Reiniciar Laboratorio
+        </button>
+        <a href="index.html" class="btn-modal-secondary">
+          <i class="fa-solid fa-house"></i> Volver al Menú Principal
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script src="js/decimoaonce.js" defer></script>
+</body>
+</html>

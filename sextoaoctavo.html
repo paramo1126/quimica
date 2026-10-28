@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6° - 8° Grado — Quizz y Fundamentos Químicos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="css/sextoaoctavo.css" />
+</head>
+<body>
+
+  <!-- TOP HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="btn-back">
+        <i class="fa fa-arrow-left"></i> Volver al Menú
+      </a>
+      <div class="header-title">
+        <i class="fa fa-flask text-sky-400"></i>
+        <span>6° – 8° GRADO</span>
+        <span class="text-xs px-2.5 py-0.5 rounded bg-sky-950 text-sky-400 border border-sky-800 hidden sm:inline-block">Fundamentos</span>
+      </div>
+      <!-- Timer Digital animado -->
+      <div id="quiz-timer-badge" class="timer-badge">
+        <i class="fa-regular fa-clock"></i>
+        <span id="timer-display">⏳ 04:00</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- SELECTOR DE MODO & PUNTAJE -->
+  <div class="mode-bar-container">
+    <div class="nav-pill-group">
+      <button id="btn-mode-quiz" class="nav-pill-btn active" onclick="switchView('quiz')">
+        <i class="fa-solid fa-list-check"></i> Quizz Evaluativo (6 Desafíos)
+      </button>
+      <button id="btn-mode-lab" class="nav-pill-btn" onclick="switchView('lab')">
+        <i class="fa-solid fa-flask-vial"></i> Laboratorio Interactivo
+      </button>
+    </div>
+
+    <div class="score-tracker-pill">
+      <span>Puntaje Quizz:</span>
+      <span id="score-counter" class="score-val">0 / 6</span>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       VISTA 1: QUIZZ DE 6 PREGUNTAS
+  ========================================== -->
+  <main id="view-quiz" class="quiz-container">
+    <div class="quiz-card">
+      <!-- Indicador de pasos (1 a 6) -->
+      <div class="step-indicator" id="step-indicator">
+        <div class="step-dot active" data-step="0"></div>
+        <div class="step-dot" data-step="1"></div>
+        <div class="step-dot" data-step="2"></div>
+        <div class="step-dot" data-step="3"></div>
+        <div class="step-dot" data-step="4"></div>
+        <div class="step-dot" data-step="5"></div>
+      </div>
+
+      <!-- Cabecera de pregunta -->
+      <div id="question-type" class="quiz-question-type">1. Teoría — Opción Múltiple</div>
+      <h2 id="question-title" class="quiz-question-title">
+        ¿Cuál es el estado de la materia donde las partículas están muy juntas y vibran sin desplazarse?
+      </h2>
+
+      <!-- Rejilla de opciones -->
+      <div id="options-container" class="options-grid">
+        <!-- Opciones inyectadas dinámicamente por JS -->
+      </div>
+
+      <!-- Caja de retroalimentación inmediata -->
+      <div id="feedback-box" class="feedback-box" style="display: none;">
+        <div id="feedback-header" class="feedback-header">
+          <i id="feedback-icon" class="fa-solid fa-circle-check"></i>
+          <span id="feedback-status">¡Correcto!</span>
+        </div>
+        <p id="feedback-desc" class="feedback-desc">
+          En los sólidos, las fuerzas de atracción mantienen a las partículas fijas en una red vibratoria.
+        </p>
+      </div>
+
+      <!-- Acciones del Quizz -->
+      <div class="quiz-actions">
+        <button id="btn-next-question" class="btn-next-question" style="display: none;" onclick="nextQuestion()">
+          <span>Siguiente Pregunta</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ==========================================
+       VISTA 2: LABORATORIO INTERACTIVO (MINIJUEGOS)
+  ========================================== -->
+  <section id="view-lab" class="lab-section-view">
+    <div class="flex gap-3 mb-6">
+      <button class="nav-pill-btn active" id="tab-lab-btn-1" onclick="switchLabTab('estados')">
+        <i class="fa-solid fa-cubes"></i> 1. Estados de la Materia
+      </button>
+      <button class="nav-pill-btn" id="tab-lab-btn-2" onclick="switchLabTab('fq')">
+        <i class="fa-solid fa-fire-burner"></i> 2. Físico vs Químico
+      </button>
+      <button class="nav-pill-btn" id="tab-lab-btn-3" onclick="switchLabTab('ph')">
+        <i class="fa-solid fa-vial"></i> 3. Escala de pH
+      </button>
+    </div>
+
+    <!-- TAB 1: Estados -->
+    <div id="lab-tab-estados" class="lab-tab-panel">
+      <div class="cards-tray" id="cardsTray">
+        <div class="draggable-card" draggable="true" data-substance="Hierro" data-correct="solido"><i class="fa-solid fa-cube text-sky-400"></i> Hierro</div>
+        <div class="draggable-card" draggable="true" data-substance="Agua" data-correct="liquido"><i class="fa-solid fa-droplet text-blue-400"></i> Agua</div>
+        <div class="draggable-card" draggable="true" data-substance="Vapor" data-correct="gas"><i class="fa-solid fa-smog text-slate-400"></i> Vapor de agua</div>
+        <div class="draggable-card" draggable="true" data-substance="Madera" data-correct="solido"><i class="fa-solid fa-tree text-amber-500"></i> Madera</div>
+        <div class="draggable-card" draggable="true" data-substance="Mercurio" data-correct="liquido"><i class="fa-solid fa-thermometer text-slate-300"></i> Mercurio</div>
+        <div class="draggable-card" draggable="true" data-substance="Oxígeno" data-correct="gas"><i class="fa-solid fa-wind text-sky-300"></i> Oxígeno (O₂)</div>
+        <div class="draggable-card" draggable="true" data-substance="Hielo" data-correct="solido"><i class="fa-solid fa-icicles text-cyan-200"></i> Hielo</div>
+        <div class="draggable-card" draggable="true" data-substance="Alcohol" data-correct="liquido"><i class="fa-solid fa-wine-glass text-indigo-300"></i> Alcohol</div>
+      </div>
+
+      <div class="drop-zones-grid">
+        <div class="drop-zone" id="zone-solido" data-zone="solido">
+          <h3 class="font-bold text-sky-400 text-base mb-3"><i class="fa-solid fa-cube"></i> SÓLIDO</h3>
+          <div class="zone-content flex flex-wrap gap-2 flex-1"></div>
+        </div>
+        <div class="drop-zone" id="zone-liquido" data-zone="liquido">
+          <h3 class="font-bold text-emerald-400 text-base mb-3"><i class="fa-solid fa-droplet"></i> LÍQUIDO</h3>
+          <div class="zone-content flex flex-wrap gap-2 flex-1"></div>
+        </div>
+        <div class="drop-zone" id="zone-gas" data-zone="gas">
+          <h3 class="font-bold text-violet-400 text-base mb-3"><i class="fa-solid fa-wind"></i> GAS</h3>
+          <div class="zone-content flex flex-wrap gap-2 flex-1"></div>
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-end gap-3">
+        <button class="btn-modal-secondary" onclick="resetEstados()">Reiniciar Bandeja</button>
+        <button class="btn-modal-primary" onclick="verificarEstados()">Verificar Clasificación</button>
+      </div>
+    </div>
+
+    <!-- TAB 2: Físico vs Químico -->
+    <div id="lab-tab-fq" class="lab-tab-panel" style="display: none;">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="fq-cards-container">
+        <!-- Generado dinámicamente -->
+      </div>
+    </div>
+
+    <!-- TAB 3: pH -->
+    <div id="lab-tab-ph" class="lab-tab-panel" style="display: none;">
+      <div class="ph-bar-wrapper">
+        <div class="flex justify-between text-xs text-slate-400 mb-2 font-mono">
+          <span>0 (Muy Ácido)</span>
+          <span>7 (Neutro)</span>
+          <span>14 (Muy Básico)</span>
+        </div>
+        <div class="ph-bar-track" id="ph-bar-track"></div>
+        <div class="mt-8">
+          <h4 class="text-sm font-bold text-slate-300 mb-3">Sustancias de Referencia:</h4>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3" id="ph-samples-list">
+            <!-- Items de pH -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       MODAL DE RESULTADOS FINALES
+  ========================================== -->
+  <div id="modal-results" class="modal-overlay">
+    <div class="modal-content">
+      <div class="w-16 h-16 rounded-full bg-sky-950 border border-sky-400/40 flex items-center justify-center mx-auto text-sky-400 text-2xl mb-4">
+        <i class="fa-solid fa-trophy"></i>
+      </div>
+      <h2 id="modal-result-title" class="modal-title">¡Quizz Finalizado!</h2>
+      <div id="modal-result-score" class="modal-score-badge">6 / 6</div>
+      <p id="modal-result-msg" class="modal-subtitle">
+        ¡Excelente trabajo! Has demostrado dominio de los conceptos esenciales de la materia y la química básica.
+      </p>
+
+      <div class="modal-btn-group">
+        <button class="btn-modal-primary" onclick="restartQuiz()">
+          <i class="fa-solid fa-rotate-right"></i> Reiniciar Quizz
+        </button>
+        <a href="index.html" class="btn-modal-secondary">
+          <i class="fa-solid fa-house"></i> Volver al Menú Principal
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script src="js/sextoaoctavo.js" defer></script>
+</body>
+</html>

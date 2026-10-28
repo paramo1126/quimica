@@ -1,0 +1,305 @@
+/* ============================================================
+   SEMANA CULTURAL DE QUÍMICA — index.css
+   Design System Formal Elegante / Dark Tech
+   ============================================================ */
+
+:root {
+  --bg-main: #0A0F1D;           /* Fondo principal oscuro */
+  --bg-surface: #131B2E;        /* Tarjetas y contenedores */
+  --bg-surface-hover: #1E293B;  /* Estado hover */
+  --border-subtle: rgba(148, 163, 184, 0.18); 
+  --border-accent: #38BDF8;     /* Borde cian acento */
+  
+  --primary: #38BDF8;          /* Cian Azulado (Acento Principal) */
+  --primary-hover: #0284C7;    
+  --secondary: #818CF8;        /* Índigo/Violeta suave */
+  
+  --success: #34D399;          /* Verde esmeralda para respuestas correctas */
+  --danger: #F87171;           /* Rojo para errores / tiempo agotado */
+  
+  --text-main: #F8FAFC;        /* Texto blanco alto contraste */
+  --text-muted: #94A3B8;       /* Texto secundario gris azulado */
+}
+
+/* ---------- RESET & BASE ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-main);
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  color: var(--text-main);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ---------- BACKGROUND CANVAS ---------- */
+#bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ---------- ELEGANT TITLE ---------- */
+.formal-title {
+  font-size: clamp(2.2rem, 5.5vw, 4.2rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: 0.03em;
+  background: linear-gradient(135deg, #FFFFFF 20%, var(--primary) 70%, var(--secondary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 0 25px rgba(56, 189, 248, 0.35));
+  user-select: none;
+}
+
+.subtitle-text {
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+  font-size: 1.1rem;
+}
+
+/* ---------- BADGE PILLS ---------- */
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid var(--border-subtle);
+  background: rgba(19, 27, 46, 0.75);
+  color: var(--text-muted);
+  backdrop-filter: blur(8px);
+  letter-spacing: 0.04em;
+  transition: all 0.25s ease;
+}
+
+.badge-pill:hover {
+  border-color: var(--border-accent);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+/* ---------- GLASS CARDS ---------- */
+.card-glass {
+  position: relative;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--border-accent), transparent);
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.card-glass:hover {
+  transform: translateY(-8px);
+  background: var(--bg-surface-hover);
+  border-color: var(--border-accent);
+  box-shadow: 0 20px 45px rgba(56, 189, 248, 0.15), 0 0 0 1px rgba(56, 189, 248, 0.3);
+}
+
+.card-glass:hover::before {
+  opacity: 1;
+}
+
+.card-featured {
+  border-color: rgba(129, 140, 248, 0.35);
+}
+
+.card-featured:hover {
+  border-color: var(--secondary);
+  box-shadow: 0 20px 45px rgba(129, 140, 248, 0.2), 0 0 0 1px rgba(129, 140, 248, 0.35);
+}
+
+.card-badge {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+  border: 1px solid rgba(129, 140, 248, 0.4);
+  border-radius: 9999px;
+  padding: 3px 12px;
+  background: rgba(129, 140, 248, 0.1);
+}
+
+/* ---------- CARD ICONS ---------- */
+.card-icon-wrapper {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.card-glass:hover .card-icon-wrapper {
+  transform: scale(1.08);
+  border-color: var(--primary);
+  background: rgba(56, 189, 248, 0.15);
+}
+
+.card-icon {
+  font-size: 2rem;
+  color: var(--primary);
+}
+
+.card-icon-secondary {
+  color: var(--secondary);
+}
+
+.card-icon-wrapper-secondary {
+  background: rgba(129, 140, 248, 0.08);
+  border-color: rgba(129, 140, 248, 0.25);
+}
+
+.card-glass:hover .card-icon-wrapper-secondary {
+  border-color: var(--secondary);
+  background: rgba(129, 140, 248, 0.18);
+}
+
+.card-icon-success {
+  color: var(--success);
+}
+
+.card-icon-wrapper-success {
+  background: rgba(52, 211, 153, 0.08);
+  border-color: rgba(52, 211, 153, 0.25);
+}
+
+.card-glass:hover .card-icon-wrapper-success {
+  border-color: var(--success);
+  background: rgba(52, 211, 153, 0.18);
+}
+
+/* ---------- CARD DESCRIPTION & METSPECS ---------- */
+.card-description {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.spec-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+}
+
+/* ---------- ENTER BUTTONS ---------- */
+.btn-enter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  border: none;
+  border-radius: 12px;
+  padding: 13px 26px;
+  cursor: pointer;
+  color: #0A0F1D;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 18px rgba(56, 189, 248, 0.3);
+}
+
+.btn-enter:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(56, 189, 248, 0.45);
+  color: #031422;
+}
+
+.btn-enter-secondary {
+  background: linear-gradient(135deg, var(--secondary) 0%, #6366F1 100%);
+  box-shadow: 0 4px 18px rgba(129, 140, 248, 0.3);
+  color: #0A0F1D;
+}
+
+.btn-enter-secondary:hover {
+  box-shadow: 0 8px 25px rgba(129, 140, 248, 0.45);
+  color: #031422;
+}
+
+.btn-enter-success {
+  background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+  box-shadow: 0 4px 18px rgba(52, 211, 153, 0.3);
+  color: #0A0F1D;
+}
+
+.btn-enter-success:hover {
+  box-shadow: 0 8px 25px rgba(52, 211, 153, 0.45);
+  color: #031422;
+}
+
+/* ---------- FOOTER ---------- */
+.footer-divider {
+  width: 140px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-accent), transparent);
+  opacity: 0.4;
+}
+
+/* ---------- CUSTOM SCROLLBAR ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-surface-hover);
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}

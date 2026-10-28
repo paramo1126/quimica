@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Semana Cultural de Química — Quizz y Desafíos Interactivos</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/index.css" />
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+  <!-- Three.js background canvas -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- HEADER -->
+  <header class="relative z-10 text-center pt-16 pb-6 px-4">
+    <div class="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full border border-sky-400/30 bg-sky-950/40 backdrop-blur-md">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span class="text-xs font-bold tracking-wider text-sky-400 uppercase">
+        Semana Cultural de Química 2026
+      </span>
+    </div>
+
+    <h1 class="formal-title mb-4">
+      DESAFÍOS QUÍMICOS<br />INTERACTIVOS
+    </h1>
+
+    <p class="subtitle-text max-w-2xl mx-auto">
+      Sistema Gamificado por Grados: Quizzes Teóricos, Cajas Orbitales y Laboratorio Molecular 3D
+    </p>
+
+    <div class="mt-6 flex justify-center gap-3 flex-wrap">
+      <span class="badge-pill"><i class="fa-solid fa-stopwatch text-sky-400"></i> Contrarreloj</span>
+      <span class="badge-pill"><i class="fa-solid fa-circle-check text-emerald-400"></i> Feedback Instantáneo</span>
+      <span class="badge-pill"><i class="fa-solid fa-cube text-indigo-400"></i> Simulación 3D</span>
+      <span class="badge-pill"><i class="fa-solid fa-award text-amber-400"></i> 6 Desafíos por Nivel</span>
+    </div>
+  </header>
+
+  <!-- MAIN CARDS -->
+  <main class="relative z-10 flex-1 flex items-center justify-center px-6 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full">
+
+      <!-- Tarjeta 1: 6° - 8° Grado -->
+      <div class="card-glass p-8 flex flex-col justify-between" data-tilt>
+        <div>
+          <div class="card-icon-wrapper">
+            <i class="fa-solid fa-flask card-icon"></i>
+          </div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="spec-chip"><i class="fa-regular fa-clock text-sky-400"></i> 4 Minutos</span>
+            <span class="spec-chip"><i class="fa-solid fa-list-check text-sky-400"></i> 6 Preguntas</span>
+          </div>
+          <h2 class="text-2xl font-bold text-slate-100 mb-2">6° – 8° Grado</h2>
+          <p class="card-description mb-6">
+            Fundamentos de la materia: estados físicos, cambios químicos, mezclas heterogéneas, escala de pH y símbolos de la tabla periódica.
+          </p>
+        </div>
+        <a href="sextoaoctavo.html" class="btn-enter w-full">
+          <span>Iniciar Quizz</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <!-- Tarjeta 2: 9° Grado -->
+      <div class="card-glass card-featured p-8 flex flex-col justify-between" data-tilt>
+        <div class="card-badge">INTERACTIVO</div>
+        <div>
+          <div class="card-icon-wrapper card-icon-wrapper-secondary">
+            <i class="fa-solid fa-atom card-icon card-icon-secondary"></i>
+          </div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="spec-chip"><i class="fa-regular fa-clock text-indigo-400"></i> 5 Minutos</span>
+            <span class="spec-chip"><i class="fa-solid fa-diagram-project text-indigo-400"></i> Teoría + Bohr</span>
+          </div>
+          <h2 class="text-2xl font-bold text-slate-100 mb-2">9° Grado</h2>
+          <p class="card-description mb-6">
+            Átomo y configuración electrónica: Principio de Pauli, electrones de valencia, núcleos atómicos interactivos y cajas orbitales de H₂O.
+          </p>
+        </div>
+        <a href="noveno.html" class="btn-enter btn-enter-secondary w-full">
+          <span>Iniciar Desafío</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <!-- Tarjeta 3: 10° - 11° Grado -->
+      <div class="card-glass p-8 flex flex-col justify-between" data-tilt>
+        <div>
+          <div class="card-icon-wrapper card-icon-wrapper-success">
+            <i class="fa-solid fa-cubes card-icon card-icon-success"></i>
+          </div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="spec-chip"><i class="fa-regular fa-clock text-emerald-400"></i> 5 Minutos</span>
+            <span class="spec-chip"><i class="fa-solid fa-vial-virus text-emerald-400"></i> Reactor 3D</span>
+          </div>
+          <h2 class="text-2xl font-bold text-slate-100 mb-2">10° – 11° Grado</h2>
+          <p class="card-description mb-6">
+            Química avanzada y orgánica: Enlace covalente, alcoholes, alcanos y síntesis 3D en tiempo real de Agua, Sal y Etanol (C₂H₅OH).
+          </p>
+        </div>
+        <a href="decimoaonce.html" class="btn-enter btn-enter-success w-full">
+          <span>Iniciar Laboratorio</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="relative z-10 text-center py-6 px-4">
+    <div class="footer-divider mx-auto mb-3"></div>
+    <p class="text-xs text-slate-500">
+      © 2026 <span class="text-slate-300 font-semibold">Semana Cultural de Química</span> — Plataforma de Gamificación Educativa
+    </p>
+  </footer>
+
+  <!-- Custom JS -->
+  <script src="js/index.js" defer></script>
+</body>
+</html>

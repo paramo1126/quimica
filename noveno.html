@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>9° Grado — Átomo, Configuración Electrónica y Molécula H₂O</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- SortableJS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/noveno.css" />
+</head>
+<body>
+
+  <!-- TOP HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="btn-back">
+        <i class="fa fa-arrow-left"></i> Volver al Menú
+      </a>
+      <div class="flex items-center gap-3">
+        <i class="fa-solid fa-atom text-indigo-400 text-xl"></i>
+        <h1 class="text-lg font-bold text-slate-100">
+          9° GRADO <span class="text-sky-400">— Átomo y Configuración Electrónica H₂O</span>
+        </h1>
+      </div>
+      <!-- Timer Digital 5 Minutos -->
+      <div id="quiz-timer-badge" class="timer-badge">
+        <i class="fa-regular fa-clock"></i>
+        <span id="timer-display">⏳ 05:00</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- LAYOUT PRINCIPAL -->
+  <main class="layout-container">
+
+    <!-- ==========================================
+         COLUMNA IZQUIERDA: LIENZO BOHR & CAJAS
+    ========================================== -->
+    <div class="canvas-panel">
+      <div class="canvas-header">
+        <div>
+          <h2 class="text-base font-bold text-slate-100 flex items-center gap-2">
+            <i class="fa-solid fa-compass-drafting text-sky-400"></i>
+            Lienzo Cuadriculado: Molécula de Agua (H₂O)
+          </h2>
+          <p class="text-xs text-slate-400">Arrastra los átomos para posicionarlos o activa el modelo de enlaces Bohr</p>
+        </div>
+        <button id="btn-bohr-toggle" class="btn-primary-action text-xs" onclick="toggleBohr()">
+          <i class="fa-solid fa-project-diagram"></i>
+          <span>Modelo de Bohr</span>
+        </button>
+      </div>
+
+      <!-- LIENZO INTERACTIVO -->
+      <div id="lienzo">
+        <!-- SVG para enlaces H-O-H -->
+        <svg id="bond-svg">
+          <line id="bond-O-H1" class="bond-line" x1="0" y1="0" x2="0" y2="0" style="display:none;"></line>
+          <line id="bond-O-H2" class="bond-line" x1="0" y1="0" x2="0" y2="0" style="display:none;"></line>
+        </svg>
+
+        <!-- Átomo Oxígeno -->
+        <div id="atom-O" class="atom-circle" style="left: 240px; top: 120px;" data-atom="O">
+          <div class="atom-symbol text-sky-400">O</div>
+          <div class="atom-specs" id="specs-O">8p⁺ · 8n</div>
+          <div class="text-[9px] text-sky-300 font-bold uppercase mt-0.5">Oxígeno</div>
+        </div>
+
+        <!-- Átomo Hidrógeno 1 -->
+        <div id="atom-H1" class="atom-circle" style="left: 90px; top: 70px;" data-atom="H1">
+          <div class="atom-symbol text-indigo-400">H₁</div>
+          <div class="atom-specs" id="specs-H1">1p⁺ · 0n</div>
+          <div class="text-[9px] text-indigo-300 font-bold uppercase mt-0.5">Hidrógeno</div>
+        </div>
+
+        <!-- Átomo Hidrógeno 2 -->
+        <div id="atom-H2" class="atom-circle" style="left: 410px; top: 70px;" data-atom="H2">
+          <div class="atom-symbol text-indigo-400">H₂</div>
+          <div class="atom-specs" id="specs-H2">1p⁺ · 0n</div>
+          <div class="text-[9px] text-indigo-300 font-bold uppercase mt-0.5">Hidrógeno</div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN: CAJAS ORBITALES -->
+      <div class="orbitals-container">
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
+              <i class="fa-solid fa-boxes-stacked text-sky-400"></i>
+              Cajas Orbitales del Oxígeno (Máx 2 electrones por caja)
+            </h3>
+            <p class="text-xs text-slate-400">Arrastra flechas de la paleta a las cajas (1s, 2s, 2px, 2py, 2pz)</p>
+          </div>
+          <button class="text-xs text-rose-400 hover:text-rose-300 px-2 py-1 rounded bg-rose-950/40 border border-rose-900/50" onclick="clearOrbitals()">
+            <i class="fa-solid fa-trash-can mr-1"></i>Limpiar Cajas
+          </button>
+        </div>
+
+        <!-- Cajas en fila -->
+        <div class="flex flex-wrap items-center justify-center gap-4 py-2">
+          <!-- 1s -->
+          <div class="orbital-group">
+            <span class="orbital-label">1s</span>
+            <div class="orbital-box" id="box-1s" data-orbital="1s"></div>
+          </div>
+
+          <!-- 2s -->
+          <div class="orbital-group">
+            <span class="orbital-label">2s</span>
+            <div class="orbital-box" id="box-2s" data-orbital="2s"></div>
+          </div>
+
+          <!-- Divisor -->
+          <div class="h-10 w-[1px] bg-slate-700/60 mx-1 hidden sm:block"></div>
+
+          <!-- 2px -->
+          <div class="orbital-group">
+            <span class="orbital-label">2pₓ</span>
+            <div class="orbital-box" id="box-2px" data-orbital="2px"></div>
+          </div>
+
+          <!-- 2py -->
+          <div class="orbital-group">
+            <span class="orbital-label">2pᵧ</span>
+            <div class="orbital-box" id="box-2py" data-orbital="2py"></div>
+          </div>
+
+          <!-- 2pz -->
+          <div class="orbital-group">
+            <span class="orbital-label">2p₂</span>
+            <div class="orbital-box" id="box-2pz" data-orbital="2pz"></div>
+          </div>
+        </div>
+
+        <!-- PALETA DE FLECHAS ARRASTRABLES -->
+        <div class="flex items-center justify-between flex-wrap gap-3 mt-4 pt-3 border-t border-slate-800">
+          <span class="text-xs font-bold text-slate-400">Paleta de Electrones:</span>
+          <div class="arrow-palette" id="arrow-palette">
+            <!-- Spin Up -->
+            <div class="arrow-palette-item">
+              <div class="arrow-token arrow-spin-up" draggable="true" data-type="spin-up">↑</div>
+              <span>Spin +½</span>
+            </div>
+            <!-- Spin Down -->
+            <div class="arrow-palette-item">
+              <div class="arrow-token arrow-spin-down" draggable="true" data-type="spin-down">↓</div>
+              <span>Spin -½</span>
+            </div>
+            <!-- Enlace Rojo -->
+            <div class="arrow-palette-item">
+              <div class="arrow-token arrow-bond-red" draggable="true" data-type="bond-red">↑</div>
+              <span>H₁ Enlace</span>
+            </div>
+            <!-- Enlace Azul -->
+            <div class="arrow-palette-item">
+              <div class="arrow-token arrow-bond-blue" draggable="true" data-type="bond-blue">↓</div>
+              <span>H₂ Enlace</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         COLUMNA DERECHA: LOS 6 DESAFÍOS DEL QUIZZ
+    ========================================== -->
+    <div class="quiz-panel">
+      <div class="flex items-center justify-between border-bottom border-slate-800 pb-3">
+        <div>
+          <h2 class="text-base font-bold text-slate-100 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-indigo-400"></i>
+            Desafíos Quizz Evaluativo (9° Grado)
+          </h2>
+          <p class="text-xs text-slate-400">Completa los 6 desafíos antes de que termine el tiempo</p>
+        </div>
+        <div class="px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-xs font-mono font-bold text-indigo-400">
+          Puntaje: <span id="score-counter" class="text-slate-100 font-bold">0 / 6</span>
+        </div>
+      </div>
+
+      <!-- DESAFÍO 1: TEORÍA Z=8 -->
+      <div class="challenge-card" id="card-challenge-1">
+        <span class="challenge-badge" id="badge-ch-1">Desafío 1 · Teoría</span>
+        <h4 class="text-xs font-bold text-slate-200 mb-2">
+          Un átomo neutro de Oxígeno (Z=8) tiene 8 protones en su núcleo. ¿Cuántos electrones orbitan a su alrededor?
+        </h4>
+        <div class="grid grid-cols-2 gap-2" id="opts-ch-1">
+          <button class="option-btn text-xs p-2" onclick="answerTheory(1, 0)">A) 8 electrones</button>
+          <button class="option-btn text-xs p-2" onclick="answerTheory(1, 1)">B) 6 electrones</button>
+          <button class="option-btn text-xs p-2" onclick="answerTheory(1, 2)">C) 16 electrones</button>
+          <button class="option-btn text-xs p-2" onclick="answerTheory(1, 3)">D) 2 electrones</button>
+        </div>
+        <p class="text-[11px] text-slate-400 mt-2 hidden" id="exp-ch-1"></p>
+      </div>
+
+      <!-- DESAFÍO 2: PRINCIPIO DE PAULI -->
+      <div class="challenge-card" id="card-challenge-2">
+        <span class="challenge-badge" id="badge-ch-2">Desafío 2 · Completar</span>
+        <h4 class="text-xs font-bold text-slate-200 mb-2">
+          El principio que establece que en cada caja orbital solo caben máximo 2 electrones con giros opuestos es el Principio de Exclusión de ________.
+        </h4>
+        <div class="grid grid-cols-2 gap-2" id="opts-ch-2">
+          <button class="option-btn text-xs p-2" onclick="answerTheory(2, 0)">A) Pauli</button>
+          <button class="option-btn text-xs p-2" onclick="answerTheory(2, 1)">B) Hund</button>
+          <button class="option-btn text-xs p-2" onclick="answerTheory(2, 2)">C) Bohr</button>
+          <button class="option-btn text-xs p-2" onclick="answerTheory(2, 3)">D) Thomson</button>
+        </div>
+        <p class="text-[11px] text-slate-400 mt-2 hidden" id="exp-ch-2"></p>
+      </div>
+
+      <!-- DESAFÍO 3: ELECTRONES DE VALENCIA -->
+      <div class="challenge-card" id="card-challenge-3">
+        <span class="challenge-badge" id="badge-ch-3">Desafío 3 · Configuración</span>
+        <h4 class="text-xs font-bold text-slate-200 mb-2">
+          En la configuración electrónica 1s² 2s² 2p⁴ del Oxígeno, ¿cuántos electrones hay en el último nivel de energía (nivel 2)?
+        </h4>
+        <div class="grid grid-cols-2 gap-2" id="opts-ch-3">
+          <button class="option-btn text-xs p-2" onclick="answerTheory(3, 0)">A) 6 e⁻ de valencia</button>
+          <button class="option-btn text-xs p-2" onclick="answerTheory(3, 1)">B) 4 e⁻ de valencia</button>
+          <button class="option-btn text-xs p-2" onclick="answerTheory(3, 2)">C) 8 e⁻ de valencia</button>
+          <button class="option-btn text-xs p-2" onclick="answerTheory(3, 3)">D) 2 e⁻ de valencia</button>
+        </div>
+        <p class="text-[11px] text-slate-400 mt-2 hidden" id="exp-ch-3"></p>
+      </div>
+
+      <!-- DESAFÍO 4: PRÁCTICO NÚCLEOS -->
+      <div class="challenge-card" id="card-challenge-4">
+        <span class="challenge-badge" id="badge-ch-4">Desafío 4 · Práctico Núcleos</span>
+        <h4 class="text-xs font-bold text-slate-200 mb-2">
+          Completa la cantidad de protones y neutrones en el acordeón (Oxígeno: 8p⁺, 8n | Hidrógenos: 1p⁺, 0n) y pulsa "Guardar".
+        </h4>
+        <div class="accordion-wrapper">
+          <div class="accordion-header" onclick="toggleAccordion()">
+            <span><i class="fa-solid fa-atom mr-2 text-sky-400"></i>Configurar Protones y Neutrones</span>
+            <i class="fa-solid fa-chevron-down text-xs" id="accordion-icon"></i>
+          </div>
+          <div class="accordion-body" id="accordion-body">
+            <div class="grid grid-cols-3 gap-2 text-center text-xs">
+              <div class="p-2 rounded bg-slate-900 border border-slate-800">
+                <span class="font-bold text-sky-400 block mb-1">Oxígeno (O)</span>
+                <div class="flex items-center justify-between mb-1"><span>p⁺:</span><input type="number" id="inp-O-p" class="input-num" value="8" /></div>
+                <div class="flex items-center justify-between"><span>n:</span><input type="number" id="inp-O-n" class="input-num" value="8" /></div>
+              </div>
+              <div class="p-2 rounded bg-slate-900 border border-slate-800">
+                <span class="font-bold text-indigo-400 block mb-1">Hidrógeno 1</span>
+                <div class="flex items-center justify-between mb-1"><span>p⁺:</span><input type="number" id="inp-H1-p" class="input-num" value="1" /></div>
+                <div class="flex items-center justify-between"><span>n:</span><input type="number" id="inp-H1-n" class="input-num" value="0" /></div>
+              </div>
+              <div class="p-2 rounded bg-slate-900 border border-slate-800">
+                <span class="font-bold text-indigo-400 block mb-1">Hidrógeno 2</span>
+                <div class="flex items-center justify-between mb-1"><span>p⁺:</span><input type="number" id="inp-H2-p" class="input-num" value="1" /></div>
+                <div class="flex items-center justify-between"><span>n:</span><input type="number" id="inp-H2-n" class="input-num" value="0" /></div>
+              </div>
+            </div>
+            <button class="btn-primary-action w-full mt-3 justify-center text-xs" onclick="saveAtomNuclei()">
+              <i class="fa-solid fa-floppy-disk"></i> Guardar en Núcleos
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DESAFÍOS 5 Y 6: CAJAS ORBITALES & VERIFICAR -->
+      <div class="challenge-card" id="card-challenge-5-6">
+        <span class="challenge-badge" id="badge-ch-5">Desafío 5 & 6 · Orbitales y Enlace</span>
+        <p class="text-xs text-slate-300 mb-3">
+          Llena las cajas orbitales del Oxígeno (1s² 2s² 2p⁴) con flechas (↑, ↓) y arrastra las flechas de enlace de color (Roja y Azul) para completar el agua H₂O.
+        </p>
+
+        <button class="btn-verify-all" onclick="verificarRespuestaCompleta()">
+          <i class="fa-solid fa-circle-check"></i>
+          <span>Verificar Respuesta H₂O</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL DE RESULTADOS FINALES -->
+  <div id="modal-results" class="modal-overlay">
+    <div class="modal-content">
+      <div class="w-16 h-16 rounded-full bg-indigo-950 border border-indigo-400/40 flex items-center justify-center mx-auto text-indigo-400 text-2xl mb-4">
+        <i class="fa-solid fa-atom"></i>
+      </div>
+      <h2 id="modal-result-title" class="text-2xl font-bold text-slate-100 mb-1">¡Desafío 9° Finalizado!</h2>
+      <div id="modal-result-score" class="text-5xl font-black text-sky-400 my-3">6 / 6</div>
+      <p id="modal-result-msg" class="text-sm text-slate-400 mb-6">
+        ¡Dominio cuántico! Has resuelto la teoría atómica, configurado los núcleos y ordenado las cajas orbitales de la molécula de agua.
+      </p>
+
+      <div class="flex flex-col gap-3">
+        <button class="btn-primary-action justify-center py-3" onclick="restartNovenoQuiz()">
+          <i class="fa-solid fa-rotate-right"></i> Reiniciar Desafío
+        </button>
+        <a href="index.html" class="btn-modal-secondary">
+          <i class="fa-solid fa-house"></i> Volver al Menú Principal
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script src="js/noveno.js" defer></script>
+</body>
+</html>

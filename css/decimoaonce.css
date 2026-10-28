@@ -1,0 +1,476 @@
+/* ============================================================
+   SEMANA CULTURAL DE QUÍMICA — decimoaonce.css
+   Design System Formal Elegante (10° - 11° Grado - Laboratorio 3D)
+   ============================================================ */
+
+:root {
+  --bg-main: #0A0F1D;           /* Fondo principal oscuro */
+  --bg-surface: #131B2E;        /* Tarjetas y contendores */
+  --bg-surface-hover: #1E293B;  /* Estado hover */
+  --border-subtle: rgba(148, 163, 184, 0.18); 
+  --border-accent: #38BDF8;     /* Borde cian acento */
+  
+  --primary: #38BDF8;          /* Cian Azulado (Acento Principal) */
+  --primary-hover: #0284C7;    
+  --secondary: #818CF8;        /* Índigo/Violeta suave */
+  
+  --success: #34D399;          /* Verde esmeralda para respuestas correctas */
+  --danger: #F87171;           /* Rojo para errores / tiempo agotado */
+  
+  --text-main: #F8FAFC;        /* Texto blanco alto contraste */
+  --text-muted: #94A3B8;       /* Texto secundario gris azulado */
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-main);
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+/* ---------- TOPBAR ---------- */
+.site-header {
+  background: rgba(19, 27, 46, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 0.85rem 1.5rem;
+}
+
+.header-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.btn-back:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-accent);
+  color: var(--primary);
+  transform: translateX(-3px);
+}
+
+.timer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(10, 15, 29, 0.85);
+  border: 1px solid var(--border-subtle);
+  border-radius: 9999px;
+  padding: 8px 18px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.timer-badge.warning {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: rgba(248, 113, 113, 0.12);
+  animation: pulse-danger 1s infinite alternate;
+}
+
+@keyframes pulse-danger {
+  from { box-shadow: 0 0 10px rgba(248, 113, 113, 0.3); }
+  to { box-shadow: 0 0 25px rgba(248, 113, 113, 0.6); }
+}
+
+/* ---------- 3-COLUMN LAB LAYOUT ---------- */
+.lab-layout {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .lab-layout {
+    grid-template-columns: 3.5fr 5fr 3.5fr;
+  }
+}
+
+/* ---------- COLUMNA 1: ELEMENTOS DISPONIBLES ---------- */
+.elements-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 1.4rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.elements-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+}
+
+.element-card {
+  background: var(--bg-main);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  padding: 1rem 0.8rem;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  user-select: none;
+}
+
+.element-card:hover {
+  transform: translateY(-4px) scale(1.03);
+  border-color: var(--border-accent);
+  box-shadow: 0 8px 25px rgba(56, 189, 248, 0.2);
+}
+
+.element-symbol {
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--primary);
+  margin: 4px 0;
+}
+
+.element-card.metal .element-symbol {
+  color: #FBBF24;
+}
+
+.element-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.element-number {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  font-size: 0.65rem;
+  font-family: monospace;
+  color: var(--text-muted);
+}
+
+.element-type-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(148, 163, 184, 0.1);
+  color: var(--text-muted);
+  display: inline-block;
+  margin-top: 6px;
+}
+
+/* Atajos rápidos para desafíos */
+.quick-mix-box {
+  background: var(--bg-main);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 0.9rem;
+}
+
+.btn-quick-mix {
+  width: 100%;
+  text-align: left;
+  background: rgba(148, 163, 184, 0.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-main);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-quick-mix:hover {
+  border-color: var(--primary);
+  background: rgba(56, 189, 248, 0.1);
+  color: var(--primary);
+}
+
+/* ---------- COLUMNA 2: REACTOR 3D (CANVAS) ---------- */
+.reactor-container {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 1.25rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.reactor-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  background: #070B14;
+}
+
+#reactor-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.reactor-overlay-info {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.reactor-pill {
+  background: rgba(10, 15, 29, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 9999px;
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* Elementos cargados en reactor */
+.loaded-elements-tray {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 0.85rem;
+  background: var(--bg-main);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  margin-top: 1rem;
+  min-height: 52px;
+}
+
+.element-pill-token {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: var(--primary);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+
+.btn-remove-token {
+  background: none;
+  border: none;
+  color: var(--danger);
+  cursor: pointer;
+  padding: 0 2px;
+  font-size: 0.8rem;
+}
+
+/* Botones de acción del reactor */
+.reactor-actions {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.btn-react {
+  background: linear-gradient(135deg, var(--success), #059669);
+  color: #0A0F1D;
+  border: none;
+  border-radius: 12px;
+  padding: 13px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 18px rgba(52, 211, 153, 0.35);
+  transition: all 0.25s ease;
+}
+
+.btn-react:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(52, 211, 153, 0.5);
+}
+
+.btn-clear-reactor {
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  border-radius: 12px;
+  padding: 13px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+}
+
+.btn-clear-reactor:hover {
+  background: var(--bg-surface-hover);
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+/* ---------- COLUMNA 3: 6 DESAFÍOS DEL QUIZZ ---------- */
+.quiz-challenges-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 1.4rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+  max-height: 820px;
+}
+
+.challenge-box {
+  background: var(--bg-main);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.challenge-box.completed {
+  border-color: var(--success);
+  background: rgba(52, 211, 153, 0.04);
+}
+
+.challenge-box.wrong {
+  border-color: var(--danger);
+  background: rgba(248, 113, 113, 0.04);
+}
+
+.challenge-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(56, 189, 248, 0.1);
+  color: var(--primary);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  margin-bottom: 5px;
+}
+
+.challenge-badge-pill.success {
+  background: rgba(52, 211, 153, 0.12);
+  color: var(--success);
+  border-color: rgba(52, 211, 153, 0.3);
+}
+
+.opt-btn-sm {
+  background: rgba(148, 163, 184, 0.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 6px 8px;
+  color: var(--text-main);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 4px;
+  transition: all 0.2s ease;
+}
+
+.opt-btn-sm:hover:not(:disabled) {
+  border-color: var(--primary);
+  background: var(--bg-surface-hover);
+}
+
+.opt-btn-sm.correct {
+  border-color: var(--success) !important;
+  background: rgba(52, 211, 153, 0.15) !important;
+}
+
+.opt-btn-sm.wrong {
+  border-color: var(--danger) !important;
+  background: rgba(248, 113, 113, 0.15) !important;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 15, 29, 0.88);
+  backdrop-filter: blur(16px);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal-content {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-accent);
+  border-radius: 24px;
+  padding: 2.8rem 2.2rem;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 35px rgba(56, 189, 248, 0.2);
+}
